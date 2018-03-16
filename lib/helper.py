@@ -25,7 +25,7 @@ def set_gpu_usage(ratio=None):
     K.set_session(sess)
 
 
-WEIGHTS_PATH = '/home/liushrui/code/dsb2018/weights/'
+WEIGHTS_PATH = '/home/liushrui/code/dsb/weights/'
 
 
 class PathConfig:
