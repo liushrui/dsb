@@ -7,7 +7,7 @@ class ClfResumeConfig(PathConfig):
     train_load_path = '../data/stage1_train_data_compressed.npz'
     test_load_path = '../data/stage1_test_data_compressed.npz'
 
-    gpu = 1    
+    gpu = 0    
     steps = 32
     epochs = 500
 
@@ -21,7 +21,7 @@ class ClfResumeConfig(PathConfig):
 
 
 
-    loss = 'binary_crossentropy'
-    # loss = dice_coef_loss
+    # loss = 'binary_crossentropy'
+    loss = dice_coef_loss
     optimizer = Adam(lr=3.e-3, decay=3.e-5)
     # optimizer = RMSprop(lr=3.33e-5, decay=1.e-5)

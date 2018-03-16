@@ -20,12 +20,10 @@ if __name__ == '__main__':
 
     # Load Data
     with np.load(conf.train_load_path) as f:
-        print(f.files)
         train_images = f['images']
         train_masks = f['masks']
 
     with np.load(conf.test_load_path) as f:
-        print(f.files)
         test_images = f['images']
         test_image_shapes = f['shapes']
 
@@ -34,19 +32,19 @@ if __name__ == '__main__':
 
     # Model
     model = UNet()
-    model.compile(optimizer=conf.optimizer, loss=conf.loss, metrics=[mean_iou])
+    model.compile(optimizer=conf.optimizer, loss=dice_coef_loss, metrics=[mean_iou])
     model.summary()
 
     checkpointer = ModelCheckpoint(filepath=conf.weight_path, verbose=1, period=5, save_weights_only=True)
     best_keeper = ModelCheckpoint(filepath=conf.best_path, verbose=1, save_weights_only=True,
-                                monitor='val_mean_iou', save_best_only=True, period=1, mode='max')
+                                  monitor='val_mean_iou', save_best_only=True, period=1, mode='max')
 
     csv_logger = CSVLogger(conf.csv_path)
     tensorboard = TensorBoard(log_dir=conf.log_path)
 
     early_stopping = EarlyStopping(monitor='val_mean_iou', min_delta=0, mode='max', patience=conf.val_patience, verbose=1)
     lr_reducer = ReduceLROnPlateau(monitor='val_mean_iou', factor=conf.lr_reduce_ratio, patience=conf.lr_patience,
-                                verbose=1, mode='max', epsilon=1.e-5, cooldown=conf.cooldown, min_lr=conf.min_lr)
+                                   verbose=1, mode='max', epsilon=1.e-5, cooldown=conf.cooldown, min_lr=conf.min_lr)
 
     with open(conf.yaml_path, "w") as f:
         f.write(model.to_yaml())
