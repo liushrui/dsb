@@ -14,7 +14,7 @@ def clean_img(x):
     return opening(closing(x, disk(1)), disk(3))
 
 
-def inference(model, test_image_shape, Id_index=-3, test_glob_path='../data/test_stage1/*/*/*'):
+def inference(model, test_images, test_image_shapes, Id_index=-3, test_glob_path='../data/test_stage1/*/*/*'):
     # build df
     test_df = pd.DataFrame(glob(test_glob_path), columns=['path'])
     test_df['ImageId'] = test_df['path'].map(lambda x:x.split('/')[Id_index])
