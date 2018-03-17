@@ -32,7 +32,12 @@ if __name__ == '__main__':
 
     # Model
     model = UNet()
-    model.compile(optimizer=conf.optimizer, loss=dice_coef_loss, metrics=[mean_iou])
+    if conf.loss == 'dice_coef_loss':
+        model.compile(optimizer=conf.optimizer, loss=dice_coef_loss, metrics=[mean_iou])
+    elif conf.loss == 'binary_cross_entropy':
+        model.compile(optimizer=conf.optimizer, loss='binary_cross_entropy', metrics=[mean_iou])
+    else:
+        raise()
     model.summary()
 
     checkpointer = ModelCheckpoint(filepath=conf.weight_path, verbose=1, period=5, save_weights_only=True)
